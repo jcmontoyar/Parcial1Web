@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap"
+      rel="stylesheet"
+    />
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -17,7 +20,7 @@
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
-    <title>Project 1 / Julián Montoya</title>
+    <title>Parcial 1 / Julián Montoya</title>
   </head>
 
   <body>
@@ -27,64 +30,199 @@
           <h1 class="logoTipo">Restaurant & Lounge</h1>
         </div>
         <div class="col col-6">
-          <img
-            src="https://i.imgur.com/1EKrQIi.png"
-            width="70"
-            height="70"
-            alt="Carrito"
-            class="img-thumbnail leftAlign"
-          />
+          <p id="numItems" class="leftAlign">0 items</p>
+          <button onclick="mostrarCarro()" class="btn btn-link float-right">
+            <img
+              src="https://i.imgur.com/1EKrQIi.png"
+              width="70"
+              height="70"
+              alt="Carrito"
+              class="img-thumbnail"
+            />
+          </button>
         </div>
       </div>
 
       <hr />
     </header>
     <main>
-      <img
-        src="https://i.imgur.com/S8Ffdqa.png"
-        width="100%"
-        height="70"
-        alt="hamburgesa"
-        class="img-fluid"
-      />
-      <hr>
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav01" aria-controls="nav01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="nav01">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-              <a class="nav-link navTitles" href="#1">Burgers</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link navTitles" href="#2">Tacos</a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link navTitles" href="#3">Salads</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link navTitles" href="#4">Drinks & sides</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <hr>
-      <div class="Texto">
-        <h2 class="text-center">Burgers</h2>
-      </div>
-      <div class>
-          <div id="cartas" class="row">
-            
+      <div class="containter-fluid">
+        <img
+          src="https://i.imgur.com/S8Ffdqa.png"
+          width="99%"
+          height="70"
+          alt="hamburgesa depresiva"
+          class="img-fluid center"
+        />
+        <hr />
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#nav01"
+            aria-controls="nav01"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="nav01">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li class="nav-item">
+                <a class="nav-link navTitles"
+                  ><button onclick="doComida('Burguers')" class="btn btn-dark">
+                    Burguers
+                  </button></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navTitles"
+                  ><button onclick="doComida('Tacos')" class="btn btn-dark">
+                    Tacos
+                  </button></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navTitles"
+                  ><button onclick="doComida('Salads')" class="btn btn-dark">
+                    Salads
+                  </button></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navTitles"
+                  ><button onclick="doComida('Desserts')" class="btn btn-dark">
+                    Desserts
+                  </button></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navTitles"
+                  ><button
+                    onclick="doComida('Drinks and Sides')"
+                    class="btn btn-dark"
+                  >
+                    Drinks & sides
+                  </button></a
+                >
+              </li>
+            </ul>
           </div>
+        </nav>
+        <hr />
+        <div>
+          <h2 id="titulo" class="text-center">Loading...</h2>
+        </div>
 
+        <div>
+          <div id="cartas" class="row center"></div>
+        </div>
+        <div>
+          <div id="tabla" class="center" style="display: none;">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Qty.</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Unit Price</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="tablaH"></tbody>
+            </table>
+            <div class="row">
+              <div class="col col-6">
+                <h5 id="total">Total:</h5>
+              </div>
+              <div class="col col-6">
+                <div class="row leftAlign">
+                  <div class="col col-md-4 col-sm-12">
+                    <button
+                      class="boton-fondoRojo"
+                      data-toggle="modal"
+                      data-target="#exampleModalCenter"
+                    >
+                      Cancel
+                    </button>
+
+                    <!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="exampleModalCenter"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="exampleModalCenterTitle"
+                      aria-hidden="true"
+                    >
+                      <div
+                        class="modal-dialog modal-dialog-centered"
+                        role="document"
+                      >
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                              Cancel the order
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Are you sure you want to cancel the order?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              onclick="cancelar()"
+                              type="button"
+                              class="boton-fondoClaro"
+                              data-dismiss="modal"
+                            >
+                              Yes, I want to cancel the order
+                            </button>
+                            <button type="button" class="boton-fondoRojo" data-dismiss="modal">
+                              No, I want to continue adding products
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col col-md-8 col-sm-12">
+                    <button onclick="confirmar()" class="boton-fondoClaro">
+                      Confirm order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <hr>
+
+      <hr />
     </main>
     <footer>
-        <p class="text-center foot">Contact us: +57 3193187936 - info @restaurante.com - @restaurante</p>
+      <p class="text-center foot">
+        Contact us: +57 3193187936 - info @restaurante.com - @restaurante
+      </p>
     </footer>
-
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
     <script src="scripcito.js"></script>
   </body>
 </html>

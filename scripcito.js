@@ -19,114 +19,66 @@ function obtener(url) {
 let link =
   "https://gist.githubusercontent.com/josejbocanegra/9a28c356416badb8f9173daf36d1460b/raw/5ea84b9d43ff494fcbf5c5186544a18b42812f09/restaurant.json";
 
-function generateTableHeadEvents(table, data) {
-  // Crear head de la tabla y adicionar la columna de # manualmente
-  let thead = table.createTHead();
-  let row = thead.insertRow();
-  let index = document.createElement("th");
-  let text = document.createTextNode("#");
-  index.appendChild(text);
-  index.setAttribute("scope", "col");
-  row.appendChild(index);
+var data;
+var titulo;
+var rowCartas;
+var elCarro = [];
+var itemsActuales = 0;
+var cantidadTotal = 0.0;
 
-  // Adicionar columna por cada key existente
-  for (let key of data) {
-    let th = document.createElement("th");
-    let text = document.createTextNode(key);
-    th.appendChild(text);
-    th.setAttribute("scope", "col");
-    row.appendChild(th);
-  }
-}
-
-function generateTableEvents(table, data) {
-  // contador de numero de elementos
-  let cont = 1;
-
-  // Iterar todos los elementos
-  for (let element of data) {
-    // añadir una row y ver si el valor de squirrel es true, si lo es entonces la row va con clase de danger de boostrap
-    let row = table.insertRow();
-    if (element["squirrel"]) {
-      row.classList.add("table-danger");
-    }
-    let cell = row.appendChild(document.createElement("th"));
-    let text = document.createTextNode(cont);
-    cell.appendChild(text);
-    cell.setAttribute("scope", "row");
-    cont++;
-
-    // Iterar cada key en el elmento, crear celda de asignar el valor del key
-    for (key in element) {
-      let cell = row.insertCell();
-      let text = document.createTextNode(element[key]);
-      cell.appendChild(text);
-    }
-  }
-}
-
-function generateTableHead2(table, data) {
-  let thead = table.createTHead();
-  let row = thead.insertRow();
-  let col = document.createElement("th");
-  let text = document.createTextNode("#");
-  col.appendChild(text);
-  col.setAttribute("scope", "col");
-  row.appendChild(col);
-
-  col = document.createElement("th");
-  text = document.createTextNode("Event");
-  col.appendChild(text);
-  col.setAttribute("scope", "col");
-  row.appendChild(col);
-
-  col = document.createElement("th");
-  text = document.createTextNode("Correlation");
-  col.appendChild(text);
-  col.setAttribute("scope", "col");
-  row.appendChild(col);
-}
-
-
-// Funcion para llenar tabla2
-function doTable2(table, data, headers) {
-  let promesa = new Promise((resolve, reject) => {
-    generateTable2(table, data);
-    generateTableHead2(table, headers);
-    resolve();
-  });
-  return promesa;
-}
+$("#exampleModalCenter").on("shown.bs.modal", function () {
+  $("#myInput").trigger("focus");
+});
 
 obtener(link).then((result) => {
   // Obtener json detalles
-  let data = JSON.parse(result);
-  let titulo = document.getElementById("texto")
-  let rowCartas = document.getElementById("cartas")
-  cambiarComida("Burgers", data, titulo, rowCartas)
+  data = JSON.parse(result);
+  titulo = document.getElementById("titulo");
+  rowCartas = document.getElementById("cartas");
+  cambiarComida("Burguers", data, titulo, rowCartas);
 });
 
+function doComida(comida) {
+  document.getElementById("cartas").style.display = "";
+  document.getElementById("tabla").style.display = "none";
+  rowCartas.innerHTML = "";
+  cambiarComida(comida, data, titulo, rowCartas);
+}
 
-function cambiarComida(comida, data, titulo, rowCartas){
-  for(let i of data){
-    if(i["name"] == comida){
-      hacerCartas(i, rowCartas, rowCartas);
+function cambiarComida(comida, data, titulo, rowCartas) {
+  for (let i of data) {
+    if (i["name"] == comida) {
+      hacerCartas(i["products"], rowCartas);
       break;
     }
   }
-  
+
   cambiarTitulo(comida, titulo);
 }
 
-function hacerCartas(data, rowCartas){
-  for(let prod of  data){
-    let card = document.createElement("div");
-    div.classList.add("card")
+function hacerCartas(data, rowCartas) {
+  for (let prod of data) {
+    let col = document.createElement("div");
+    col.classList.add("col");
+    col.classList.add("col-12");
+    col.classList.add("col-sm-6");
+    col.classList.add("col-lg-3");
+    col.classList.add("col-md-6");
+    col.setAttribute("align", "center");
 
-    let imagen = document.createElement("img")
-    imagen.classList.add("card-img-top")
+    let card = document.createElement("div");
+    card.classList.add("card");
+    card.classList.add("flex-column");
+    card.classList.add("d-flex");
+
+    col.appendChild(card);
+
+    let imagen = document.createElement("img");
+    imagen.classList.add("card-img-top");
     imagen.setAttribute("src", prod["image"]);
     imagen.setAttribute("alt", prod["name"]);
+    imagen.setAttribute("width", "286");
+    imagen.setAttribute("height", "180");
 
     let cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
@@ -138,20 +90,104 @@ function hacerCartas(data, rowCartas){
     par.innerHTML = prod["description"];
 
     let but = document.createElement("button");
-    but.classList.add("btn btn-dark");
+    but.classList.add("btn");
+    but.classList.add("btn-dark");
+    but.classList.add("botonAbajo");
+    but.setAttribute(
+      "onclick",
+      'adicionarAlCarro( "' + prod["name"] + '","' + prod["price"] + '")'
+    );
     but.innerHTML = "Add to car";
+
+    let price = document.createElement("h5");
+    price.innerHTML = "$" + prod["price"];
+    price.classList.add("priceAbajo");
 
     cardBody.appendChild(titulo);
     cardBody.appendChild(par);
+    cardBody.appendChild(price);
     cardBody.appendChild(but);
 
-    div.appendChild(imagen);
-    div.appendChild(cardBody);
-    rowCartas.appendChild(div);
-    
+    card.appendChild(imagen);
+    card.appendChild(cardBody);
+    rowCartas.appendChild(col);
   }
 }
 
-function cambiarTitulo(comida, titulo){
-  titulo.innerHtml = comida;
+function adicionarAlCarro(descripcion, unitPrice) {
+  itemsActuales++;
+  cantidadTotal = cantidadTotal + parseFloat(unitPrice);
+  document.getElementById("numItems").innerHTML = itemsActuales + " items";
+  var added = false;
+  for (let prod of elCarro) {
+    if (prod["descripcion"] == descripcion) {
+      prod["cantidad"]++;
+      added = true;
+      break;
+    }
+  }
+  if (!added) {
+    elCarro.push({
+      item: elCarro.length + 1,
+      descripcion: descripcion,
+      unitPrice: unitPrice,
+      cantidad: 1,
+    });
+  }
+  actualizarTabla();
+}
+
+function cambiarTitulo(comida, titulo) {
+  titulo.innerHTML = comida;
+}
+
+function mostrarCarro() {
+  document.getElementById("titulo").innerHTML = "Order detail";
+  document.getElementById("cartas").style.display = "none";
+  document.getElementById("tabla").style.display = "";
+}
+
+function actualizarTabla() {
+  let tablaHead = document.getElementById("tablaH");
+  tablaHead.innerHTML = "";
+  let cont = 1;
+  for (let prod of elCarro) {
+    let tr = document.createElement("tr");
+    let th = document.createElement("th");
+
+    th.innerHTML = cont++;
+    th.setAttribute("span", "row");
+    tr.appendChild(th);
+
+    let td = document.createElement("td");
+    td.innerHTML = prod["cantidad"];
+    tr.appendChild(td);
+
+    td = document.createElement("td");
+    td.innerHTML = prod["descripcion"];
+    tr.appendChild(td);
+
+    td = document.createElement("td");
+    td.innerHTML = prod["unitPrice"];
+    tr.appendChild(td);
+
+    td = document.createElement("td");
+    td.innerHTML = parseFloat(prod["cantidad"]) * parseFloat(prod["unitPrice"]);
+    tr.appendChild(td);
+
+    tablaHead.appendChild(tr);
+  }
+  document.getElementById("total").innerHTML = "Total: $" + cantidadTotal;
+}
+
+function confirmar() {
+  console.log(elCarro);
+}
+
+function cancelar() {
+  elCarro = [];
+  itemsActuales = 0;
+  cantidadTotal = 0.0;
+  actualizarTabla();
+  document.getElementById("numItems").innerHTML = itemsActuales + " items";
 }

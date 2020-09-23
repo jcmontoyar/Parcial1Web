@@ -1,25 +1,64 @@
-.logoTipo{
-    font-family: 'Satisfy', cursive;
+.logoTipo {
+  font-family: "Satisfy", cursive;
 }
 
-body, html{
-    overflow-x: hidden;
+body,
+html {
+  overflow-x: hidden;
 }
 
-.leftAlign{
-    float: right;
-    size: 300px;
+.leftAlign {
+  float: right;
+  padding-top: 25px;
+  padding-right: 10px;
+  font-weight: bold;
 }
 
-.foot{
-    font-size: 13px;
-    font-weight: bold;
+.foot {
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .card {
-    /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+  transition: 0.3s;
+  width: 90%;
+  height: 32rem;
+}
+
+.botonAbajo {
+  position: absolute;
+  bottom: 5%;
+  left: 10%;
+}
+
+.priceAbajo {
+  position: absolute;
+  bottom: 12%;
+  left: 10%;
+}
+
+.ocultar {
+  display: none;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 99%;
+}
+
+.boton-fondoClaro {
+  background-color: #f4e6db;
+  border-radius: 7px;
+  border-width: 1px;
+  height: 40px;
+}
+
+.boton-fondoRojo {
+  background-color: #fa5858;
+  border-radius: 7px;
+  border-width: 0px;
+  height: 40px;
+  color: black;
+}
